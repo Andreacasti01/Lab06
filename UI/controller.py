@@ -29,3 +29,26 @@ class Controller:
 
     # Altre Funzioni Event Handler
     # TODO
+    def ottieni_strumenti(self, e):
+        lista = self._model.get_strumenti()
+        self._view.lista_strumenti.controls.clear()
+        for strum in lista:
+            testo_visual = ft.Text(f"{strum.codice} {strum.tipo} {strum.marca} "
+                                   f"{strum.anno_acquisto} {strum.valore} {strum.disponibile}")
+            self._view.lista_strumenti.controls.append(testo_visual)
+        self._view.page.update()
+
+    def cerca_strumento(self, e):
+        tipo_strum = self._view.input_tipo_strumento.value
+        lista_tipo = self._model.cerca_strumenti_per_tipo(tipo_strum)
+        self._view.lista_strumenti_ricerca.controls.clear()
+        if lista_tipo:
+            for s in lista_tipo:
+                testo = ft.Text(f"{s.codice} {s.tipo} {s.marca} "
+                                f"{s.anno_acquisto} {s.valore} {s.disponibile}")
+                self._view.lista_strumenti_ricerca.controls.append(testo)
+            self._view.page.update()
+        else:
+            self._view.lista_strumenti_ricerca.controls.append(
+                ft.Text("Non esiste nessuno strumento di questo tipo."),
+                color="red")
